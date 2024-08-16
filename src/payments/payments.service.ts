@@ -1,4 +1,4 @@
-import { Injectable, Req, Res } from '@nestjs/common';
+import { BadRequestException, Injectable, Req, Res } from '@nestjs/common';
 import { envs } from 'src/config/envs';
 import Stripe from 'stripe';
 import { PaymentSessionDto } from './dto/payment-session.dto';
@@ -40,6 +40,8 @@ export class PaymentsService {
 
   async stripeWebhook(@Req() req: Request, @Res() res: Response) {
     const sig = req.headers['stripe-signature'];
+
+    if (!sig) throw new BadRequestException('Missing information');
 
     let event: Stripe.Event;
     const endpointSecret = envs.stripeEndpointSecret;
