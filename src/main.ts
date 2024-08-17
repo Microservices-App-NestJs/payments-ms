@@ -22,7 +22,7 @@ async function bootstrap() {
     options: {
       servers: envs.natsServers,
     },
-  });
+  }, { inheritAppConfig: true },);
   await app.startAllMicroservices();
 
   app.use(morgan('dev'));
